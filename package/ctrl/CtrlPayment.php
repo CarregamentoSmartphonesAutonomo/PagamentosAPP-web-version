@@ -3,7 +3,7 @@
 
 
 
-    Pagarme::setApiKey("sua API key");
+    Pagarme::setApiKey("ak_test_b07TskPkITgpLchCWhuzXWicKTuKJR");
     $transaction = new PagarMe_Transaction(array(
         'amount' => ($_POST['value'] * 100),
         'card_hash' => $_POST['token']
