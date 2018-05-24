@@ -1,7 +1,9 @@
 <?php
+	echo '"Entrando no método"';
     require("../util/pagarme-php/Pagarme.php");
 
 
+	echo '"Puxou da biblioteca as paradas do pagarme."';
 
     Pagarme::setApiKey("ak_test_b07TskPkITgpLchCWhuzXWicKTuKJR");
     $transaction = new PagarMe_Transaction(array(
