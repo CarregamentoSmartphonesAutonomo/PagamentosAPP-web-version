@@ -1,17 +1,34 @@
 <?php
-	echo '"Entrando no método"';
-    require("../util/pagarme-php/Pagarme.php");
+	echo '"Entrando no método\n"';
+    require("../util/pagarme-php/lib/PagarMe.php");
 
 
-	echo '"Puxou da biblioteca as paradas do pagarme."';
+	echo '"Puxou da biblioteca as paradas do pagarme."'+'\n';
 
-    Pagarme::setApiKey("ak_test_b07TskPkITgpLchCWhuzXWicKTuKJR");
-    $transaction = new PagarMe_Transaction(array(
-        'amount' => ($_POST['value'] * 100),
-        'card_hash' => $_POST['token']
-    ));
-    $transaction->charge();
-    $status = $transaction->status;
+
+	$pagarMe = new \PagarMe\Sdk\PagarMe("ak_test_b07TskPkITgpLchCWhuzXWicKTuKJR");
+	
+	$card = $pagarMe->card()->createFromHash($_POST['token']);
+
+	$customer = $pagarMe->customer()->create(
+		'John Dove',
+		'john@site.com',
+		'09130141095',
+		/** @var $address \PagarMe\Sdk\Customer\Address */
+		new Address(),
+		/** @var $phone \PagarMe\Sdk\Customer\Phone */
+		new Phone(),
+		'15021994',
+		'M'
+	);
+
+	$transaction = $pagarMe->transaction()->creditCardTransaction(
+	    $_POST['value'],
+        $card,
+		$customer
+    );
+
+    $status = $transaction->postbackUrl;
 
     if( strcasecmp($status, 'refused') == 0 ){
         echo '"Pagamento recusado. Tente outro cartão."';
