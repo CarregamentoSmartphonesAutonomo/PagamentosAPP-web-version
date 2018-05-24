@@ -1,23 +1,34 @@
 <?php
 	echo '"Entrando no método\n"';
-    require("../util/pagarme-php/lib/PagarMe.php");
+    require("../util/vendor/autoload.php");
 
 
 	echo '"Puxou da biblioteca as paradas do pagarme."'+'\n';
 
 
 	$pagarMe = new \PagarMe\Sdk\PagarMe("ak_test_b07TskPkITgpLchCWhuzXWicKTuKJR");
-	
+
 	$card = $pagarMe->card()->createFromHash($_POST['token']);
+
+	$address = new \PagarMe\Sdk\Customer\Address([
+		'street' => 'xxx',
+		'streetNumber' => 'xx',
+		'neighborhood' => 'Cruzeiro Novo',
+		'zipcode' => '70658-498',
+		'complementary' => 'jlkj',
+		'city' => 'Brasília',
+		'state' => 'Distrito Federal',
+		'country' => 'Brasil',
+	]);
+
+	$phone = new \PagarMe\Sdk\Customer\Phone(['ddd' => '47', 'number' => '99999999', 'ddi' => '55']);
 
 	$customer = $pagarMe->customer()->create(
 		'John Dove',
 		'john@site.com',
-		'09130141095',
-		/** @var $address \PagarMe\Sdk\Customer\Address */
-		new Address(),
-		/** @var $phone \PagarMe\Sdk\Customer\Phone */
-		new Phone(),
+		'11337226521',
+		$address,
+		$phone,
 		'15021994',
 		'M'
 	);
